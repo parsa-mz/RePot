@@ -1,0 +1,158 @@
+# Model registry for the RePoT release.
+#
+# Each entry maps a model alias to a provider + model id. The CLI looks up the
+# alias from the experiment YAML's `models.active` field, or via `--model`.
+#
+# Auth: each provider reads its API key from environment variables. See
+# .env.example at the repo root for the list. None of the entries below
+# require an internal proxy or non-public dependency.
+#
+# Providers:
+#   openai_responses    -- OpenAI Responses API (GPT-5 reasoning models)
+#   anthropic_messages  -- Public Anthropic Messages API (Claude)
+#   google_genai        -- Google Gemini SDK (public Gemini API or Vertex AI)
+#   openai_compat       -- OpenAI-compatible endpoint (vLLM / local servers)
+#   local_dummy         -- offline test/smoke client (no API key required)
+
+default:
+  provider: openai_compat
+  base_url: ${REPOT_OPENAI_BASE_URL:-http://localhost:8000/v1}
+  api_key: ${REPOT_API_KEY:-EMPTY}
+  model: Qwen/Qwen3-8B
+  temperature: 0.0
+  max_tokens: 16384
+
+local_dummy:
+  provider: local_dummy
+  model: local_dummy
+  temperature: 0.0
+  max_tokens: 512
+
+# -- OpenAI ---------------------------------------------------------------
+# Reads OPENAI_API_KEY from the environment.
+
+gpt_5_4_mini:
+  provider: openai_responses
+  model: gpt-5.4-mini
+  reasoning_effort: none
+  temperature: 0.0
+  max_tokens: 32768
+
+gpt_5_4_mini_low:
+  provider: openai_responses
+  model: gpt-5.4-mini
+  reasoning_effort: low
+  temperature: 0.0
+  max_tokens: 32768
+
+gpt_5_4_mini_medium:
+  provider: openai_responses
+  model: gpt-5.4-mini
+  reasoning_effort: medium
+  temperature: 0.0
+  max_tokens: 32768
+
+# -- Anthropic ------------------------------------------------------------
+# Reads ANTHROPIC_API_KEY from the environment.
+
+claude_sonnet_4_6:
+  provider: anthropic_messages
+  model: claude-sonnet-4-6
+  temperature: 0.0
+  max_tokens: 16384
+
+claude_haiku_4_5:
+  provider: anthropic_messages
+  model: claude-haiku-4-5-20251001
+  temperature: 0.0
+  max_tokens: 16384
+
+claude_opus_4_7:
+  provider: anthropic_messages
+  model: claude-opus-4-7
+  temperature: 0.0
+  max_tokens: 16384
+
+# Extended-thinking variant; budget_tokens must be < max_tokens.
+claude_sonnet_4_6_thinking:
+  provider: anthropic_messages
+  model: claude-sonnet-4-6
+  thinking_budget: 8000
+  temperature: 1.0  # required when thinking is enabled
+  max_tokens: 16384
+
+# -- Google ---------------------------------------------------------------
+# Reads GOOGLE_API_KEY (public Gemini API) or runs against Vertex AI when
+# GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION are set.
+
+gemini_3_5_flash:
+  provider: google_genai
+  model: gemini-3.5-flash
+  project: ${GOOGLE_CLOUD_PROJECT:-}
+  location: ${GOOGLE_CLOUD_LOCATION:-global}
+  thinking_level: MEDIUM
+  temperature: 0.0
+  max_tokens: 14000
+
+gemini_3_5_flash_high:
+  provider: google_genai
+  model: gemini-3.5-flash
+  project: ${GOOGLE_CLOUD_PROJECT:-}
+  location: ${GOOGLE_CLOUD_LOCATION:-global}
+  thinking_level: HIGH
+  temperature: 0.0
+  max_tokens: 14000
+
+gemini_3_5_flash_low:
+  provider: google_genai
+  model: gemini-3.5-flash
+  project: ${GOOGLE_CLOUD_PROJECT:-}
+  location: ${GOOGLE_CLOUD_LOCATION:-global}
+  thinking_level: LOW
+  temperature: 0.0
+  max_tokens: 14000
+
+gemini_3_5_flash_no_thinking:
+  provider: google_genai
+  model: gemini-3.5-flash
+  project: ${GOOGLE_CLOUD_PROJECT:-}
+  location: ${GOOGLE_CLOUD_LOCATION:-global}
+  thinking_level: NONE
+  temperature: 0.0
+  max_tokens: 14000
+
+# -- Open weights via vLLM (OpenAI-compatible) -----------------------------
+# Bring up the model with `vllm serve <model>` and set REPOT_OPENAI_BASE_URL.
+
+qwen3_6_35b_a3b:
+  provider: openai_compat
+  base_url: ${REPOT_OPENAI_BASE_URL:-http://localhost:8000/v1}
+  api_key: ${REPOT_API_KEY:-EMPTY}
+  model: Qwen/Qwen3.6-35B-A3B
+  temperature: 0.0
+  max_tokens: 16384
+
+gemma4_26b_a4b_it:
+  provider: openai_compat
+  base_url: ${REPOT_OPENAI_BASE_URL:-http://localhost:8000/v1}
+  api_key: ${REPOT_API_KEY:-EMPTY}
+  model: google/gemma-4-26B-A4B-it
+  temperature: 0.0
+  max_tokens: 16384
+
+gpt_oss_20b:
+  provider: openai_compat
+  base_url: ${REPOT_OPENAI_BASE_URL:-http://localhost:8000/v1}
+  api_key: ${REPOT_API_KEY:-EMPTY}
+  model: openai/gpt-oss-20b
+  temperature: 0.0
+  max_tokens: 16384
+
+nemotron_3_nano_30b:
+  provider: openai_compat
+  base_url: ${REPOT_OPENAI_BASE_URL:-http://localhost:8000/v1}
+  api_key: ${REPOT_API_KEY:-EMPTY}
+  model: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8
+  temperature: 0.0
+  max_tokens: 16384
+

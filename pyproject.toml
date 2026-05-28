@@ -1,0 +1,49 @@
+[project]
+name = "repot"
+version = "1.0.0"
+description = "RePoT: Recoverable Program-of-Thought via Checkpoint Repair."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Parsa Mazaheri", email = "pmazaher@ucsc.edu" }]
+keywords = ["llm", "planning", "program-of-thought", "reasoning", "verification"]
+
+dependencies = [
+    "anthropic",
+    "google-genai",
+    "httpx",
+    "openai",
+    "pandas",
+    "pydantic",
+    "python-dotenv",
+    "pyyaml",
+    "rich",
+]
+
+[project.urls]
+Homepage = "https://github.com/TBD/repot"
+Paper    = "https://arxiv.org/abs/TBD"
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+hf = ["datasets", "huggingface-hub"]
+
+[project.scripts]
+repot = "repot.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["repot*"]
+exclude = ["data*", "configs*", "tests*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,50 @@
+models:
+  config: configs/models.yaml
+  active: gemini_3_5_flash
+
+dataset:
+  input: data/problems/puzzlezoo_775.jsonl
+  environments:
+    - river_crossing
+    - blocksworld
+    - checker_jumping
+
+recovery:
+  conditions:
+    - no_feedback
+    - error_only
+    - state_feedback
+    - state_plus_legal_actions
+    - stateguard_rollback
+    # RePoT prefix-conditioning ablation — paper headline.
+    # Expected ordering if the verified-prefix novelty is load-bearing:
+    #   repot_full  >=  repot_no_prefix  >>  repot_restart
+    - repot_full
+    - repot_no_prefix
+    - repot_restart
+    # VEX prefix-conditioning ablation kept as appendix comparison.
+    - vex_full
+    - vex_no_prefix
+    - vex_restart_from_initial
+
+run:
+  output: data/recovery/derail_550.jsonl
+  workers: 10
+  max_steps_multiplier: 2
+  max_retries: 3
+  self_consistency_k: 4
+  max_state_visits: 4
+  max_repair_calls: 1
+  max_llm_calls: 4
+  chunk_size: 32
+  chunk_size_by_env:
+    checker_jumping: 64
+    tower_of_hanoi: 200
+    river_crossing: 16
+    blocksworld: 32
+  vex_default_proposer: json
+  vex_proposer_by_env:
+    tower_of_hanoi: code
+    checker_jumping: code
+    blocksworld: json
+    river_crossing: json
