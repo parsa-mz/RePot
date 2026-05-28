@@ -1,6 +1,4 @@
-# RePoT
-
-**Recoverable Program-of-Thought via Checkpoint Repair**
+# RePot: Recoverable Program-of-Thought via Checkpoint Repair
 
 [![arXiv](https://img.shields.io/badge/arXiv-TBD-b31b1b)](https://arxiv.org/abs/TBD)
 [![Python](https://img.shields.io/badge/python-3.13%2B-blue)]()
@@ -20,13 +18,11 @@ The result: RePoT costs **at most one extra LLM call** on the ~14% of problems w
 We evaluate RePoT against six baselines (CoT, Self-Consistency, PoT, PoT-retry, VEX, RePoT-A) on three benchmarks: **PuzzleZoo-775** (775 stratified instances of Tower of Hanoi, Checker Jumping, River Crossing, Blocksworld at controllable complexity), **PlanBench-Blocksworld-378** (3–12 blocks, third-party replication), and **Derail-550** (550 mid-rollout error injections × 11 recovery conditions). Models tested: four closed-source configurations (`gpt-5.4-mini` ± reasoning, `gemini-3.5-flash`, `claude-sonnet-4.6`) and four open-weights (Qwen3.6-35B-A3B, Gemma-4-26B-A4B-it, gpt-oss-20b, Nemotron-3-Nano-30B-A3B) served via vLLM. Everything is reproducible from `repot run` traces via `repot judge`.
 
 - **Paper**: [arXiv:TBD](https://arxiv.org/abs/TBD)
-- **Datasets**: HuggingFace [`pmazaher/repot-bench`](https://huggingface.co/datasets/pmazaher/repot-bench) (canonical); see [`data/`](data/) for the paper-version mirror.
-- **Code**: this repo.
 
 ## Install
 
 ```bash
-git clone https://github.com/TBD/repot && cd repot
+git clone https://github.com/parsa-mz/RePot && cd RePot
 uv sync
 ```
 
