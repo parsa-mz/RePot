@@ -22,8 +22,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/TBD/repot"
-Paper    = "https://arxiv.org/abs/TBD"
+Homepage = "https://github.com/parsa-mz/RePot"
+Paper    = "https://arxiv.org/abs/2605.30052"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
